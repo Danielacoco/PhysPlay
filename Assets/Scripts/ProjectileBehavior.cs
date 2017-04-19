@@ -11,10 +11,14 @@ public class ProjectileBehavior : MonoBehaviour {
 
 
 	private Rigidbody ball;
+	private LineRenderer line;
+
 
 	// Use this for initialization
 	void Start () {
 		ball = GetComponent<Rigidbody> ();
+
+		line = GetComponent<LineRenderer> ();
 
 	}
 	
@@ -28,6 +32,9 @@ public class ProjectileBehavior : MonoBehaviour {
 
 			 
 		}
+		line.SetPosition (0, transform.position);
+		line.SetPosition (1, wand.transform.position);
+
 		
 	}
 }
