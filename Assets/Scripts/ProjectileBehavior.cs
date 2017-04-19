@@ -24,18 +24,32 @@ public class ProjectileBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		var device = SteamVR_Controller.Input ((int)wand.index);
-		if (Joint == null && device.GetTouchDown (SteamVR_Controller.ButtonMask.Trigger)) {
+		SteamVR_Controller.Device device =  SteamVR_Controller.Input ((int)wand.index);
+		if (device.GetTouch (SteamVR_Controller.ButtonMask.Trigger)) {
+
+            Vector3 vel1 = transform.position - wand.transform.position;
+            float lVel1 = vel1.magnitude;
+            vel1.Normalize();
+
+            Vector3 vel = device.velocity;
+            float lVel = vel.magnitude;
+            float dot = Vector3.Dot(vel, vel1);
+
 			float triggerPress = device.GetState ().rAxis1.x; //get how much trigger is pressed!
-			Vector3 direction = wand.transform.position - transform.position; 
-			ball.AddForce (direction.normalize * 5f * triggerPress);
 
-			 
-		}
-		line.SetPosition (0, transform.position);
-		line.SetPosition (1, wand.transform.position);
+            vel1 = -1f * triggerPress * vel1 * lVel * (-dot + 1);
+            ball.AddForce (vel1);
+            SpringJoint j = GetComponent<SpringJoint>();
+            j.spring = 1 * triggerPress;				 
+		} else
+        {
+            SpringJoint j = GetComponent<SpringJoint>();
+            j.spring = 0;
+        }
+        line.SetPosition(0, transform.position);
+        line.SetPosition(1, wand.transform.position);
 
-		
-	}
+
+    }
 }
  
