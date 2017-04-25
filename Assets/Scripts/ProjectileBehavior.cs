@@ -7,7 +7,7 @@ using UnityEngine;
 public class ProjectileBehavior : MonoBehaviour {
 
 
-	public SteamVR_TrackedObject wand;
+	private SteamVR_TrackedObject wand;
 
 
 	private Rigidbody ball;
@@ -20,6 +20,7 @@ public class ProjectileBehavior : MonoBehaviour {
 
 		line = GetComponent<LineRenderer> ();
 
+        wand = ControllerManager.Instance.rightController;
 	}
 	
 	// Update is called once per frame
